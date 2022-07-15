@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ post.title_tag }}
+{% endblock %}
+
+
+{% block content %}
+    <!--current user: {{ user.id }}
+    post author: {{ post.author.id }}-->
+    <h1>{{ post.title }}</h1>
+    <small>By: {{ post.author.first_name }} {{ post.author.last_name }} - {{post.post_date}}</small><br/>
+    <hr>
+    <br/>
+    {% if post.header_image %}
+        <img src="{{ post.header_image.url }}">
+    {% endif %}
+    <br/>
+    Category: <a href="{% url 'category' post.category|slugify  %}">{{ post.category }}</a>
+    <br/>
+    Description: {{ post.description|safe }}
+    <br/>
+    Size: {{ post.size }} People
+    <br/>
+    Budget: ${{ post.budget }}
+
+    {% if user.is_authenticated %}
+        {% if user.id == post.author.id %}
+            <br/><br/>
+            <a href="{% url 'update_post' post.pk %}" class="btn btn-secondary">Edit</a>
+            <a href="{% url 'delete_post' post.pk %}" class="btn btn-secondary">Delete</a>
+        {% endif %}
+    {% endif %}
+    <br/><br/>
+    <a href="{% url 'home' %}" class="btn btn-secondary">Back</a>
+    <br/><br/>
+
+    <hr>
+    <br/>
+    <form action="{% url 'like_post' post.pk %}" method="POST">
+        {% csrf_token %}
+        {% if user.is_authenticated %}
+            {% if liked %}
+                <button type="submit", name="post_id", value="{{ post.id }}", class="btn btn-danger btn-sm">Unlike</button>
+            {% else %}
+                <button type="submit", name="post_id", value="{{ post.id }}", class="btn btn-primary btn-sm">Like</button>
+            {% endif %}
+        {% else %}
+            You need to login to access this page
+        {% endif %}
+            {% if total_likes != 0 %} 
+                - {{ total_likes }} Likes
+            {% else %}
+                - 0 Likes
+            {% endif %}
+    </form>
+
+{% endblock %}

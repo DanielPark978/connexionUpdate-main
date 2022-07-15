@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+    <h1>Browse Ideas</h1>
+
+    <ul>
+    {% for post in object_list %}
+        <br/>
+        {% if post.header_image %}
+            <img src="{{ post.header_image.url }}">
+        {% endif %}
+        <li><a href = "{% url 'article-detail' post.pk %}">{{ post.title }}</a>
+             <br/> - {{ post.category }} - {{ post.author.first_name }}
+        {{ post.author.last_name }} -  {{ post.post_date }}<br/>
+        {{ post.snippet|slice:":200"|safe }}
+        <!--{{ post.description|slice:":200"|safe }}--></li>
+
+        <!--{% if total_likes != 0 %} 
+            - {{ total_likes }} Likes
+        {% else %}
+            - 0 Likes
+        {% endif %}-->
+        
+    {% endfor %}
+    </ul>
+
+{% else %}
+
+You need to login to access this page
+
+{% endif %}
+
+{% endblock %}

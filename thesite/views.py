@@ -44,6 +44,7 @@ class BrowseView(ListView):
         #context["total_likes"] =  total_likes
         return context
 
+
 def CategoryListView(request):
     cat_menu_list = Category.objects.all()
     return render(request, 'category_list.html', {'cat_menu_list':cat_menu_list}) 

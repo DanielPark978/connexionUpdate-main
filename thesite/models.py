@@ -16,6 +16,21 @@ class Category(models.Model):
         #return reverse('article-detail', args=(str(self.id)))
         return reverse('home')
 
+class Profile(models.Model):
+    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+    bio = models.TextField() 
+    profile_pic = models.ImageField(null=True, blank=True, upload_to="images/profile/")
+    website_url = models.CharField(max_length=255, null=True, blank=True)
+    facebook_url = models.CharField(max_length=255, null=True, blank=True)
+    twitter_url = models.CharField(max_length=255, null=True, blank=True)
+    instagram_url = models.CharField(max_length=255, null=True, blank=True)
+    pinterest_url = models.CharField(max_length=255, null=True, blank=True)
+    linkedin_url = models.CharField(max_length=255, null=True, blank=True)
+    #add more fields like tags and jobs here for user(acessed by user.profile.tags, etc.)
+
+    def __str__(self):
+        return str(self.user)
+
 class Post(models.Model):
     title = models.CharField(max_length=255)
     header_image = models.ImageField(null=True, blank=True, upload_to="images/")
@@ -24,7 +39,7 @@ class Post(models.Model):
     size = models.IntegerField()
     budget = models.IntegerField()
     post_date = models.DateField(auto_now_add=True)
-    category = models.CharField(max_length=255, default = "Uncategorized")
+    category = models.JSONField(max_length=255, default = "Uncategorized")
     snippet = models.CharField(max_length=255)
     description = RichTextField(blank=True, null=True)
     likes = models.ManyToManyField(User, related_name='blog_posts')

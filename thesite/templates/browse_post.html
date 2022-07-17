@@ -12,7 +12,14 @@
             <img src="{{ post.header_image.url }}">
         {% endif %}
         <li><a href = "{% url 'article-detail' post.pk %}">{{ post.title }}</a>
-             <br/> - {{ post.category }} - {{ post.author.first_name }}
+             <br/>
+             
+            {% for category in post.category %} 
+                - {{ category }}
+            {% endfor %}
+             
+             
+             - {{ post.author.first_name }}
         {{ post.author.last_name }} -  {{ post.post_date }}<br/>
         {{ post.snippet|slice:":200"|safe }}
         <!--{{ post.description|slice:":200"|safe }}--></li>

@@ -1,6 +1,42 @@
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm
 from django.contrib.auth.models import User
 from django import forms
+from thesite.models import Profile, Category
+
+
+#choices = Occupation.objects.all().values_list('name', 'name')
+#choice_list1 = []
+ 
+#for item in choices:
+#   choice_list1.append(item)
+
+choices = Category.objects.all().values_list('name', 'name')
+choice_list = []
+ 
+for item in choices:
+    choice_list.append(item)
+
+
+print(choice_list)
+class ProfilePageForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ('bio', 'profile_pic', 'website_url', 'facebook_url', 'twitter_url', 'instagram_url', 'pinterest_url', 'linkedin_url', 'interest', 'interest2', 'interest3')
+        widgets = {
+            'bio': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Write about yourself'}),
+            #'profile_pic': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Title your idea here'}),
+            'website_url': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Link to your personal website'}),
+            'facebook_url': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Link to your Facebook profile'}),
+            'twitter_url': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Link to your Twitter profile'}),
+            'instagram_url': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Link to your Instagram profile'}),
+            'pinterest_url': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Link to your Pinterest profile'}),
+            'linkedin_url': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Link to your Linkedin profile'}),
+            'interest': forms.Select(choices = choice_list, attrs={'class': 'form-control', 'placeholder': 'What topics are you interested in?'}),
+            'interest2': forms.Select(choices = choice_list, attrs={'class': 'form-control', 'placeholder': 'What topics are you interested in?'}),
+            'interest3': forms.Select(choices = choice_list, attrs={'class': 'form-control', 'placeholder': 'What topics are you interested in?'}),
+            #'occupation': forms.Select(choices = choice_list1, attrs={'class': 'form-control', 'placeholder': 'What is your current occupation?'}),
+           
+        }
 
 class SignUpForm(UserCreationForm):
     email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'form-control'}))

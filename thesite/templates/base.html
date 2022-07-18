@@ -26,7 +26,7 @@
           <a class="nav-link" href="{% url 'add_post' %}">List Idea</a>
         </li>
 
-        <li class="nav-item">
+        <!--<li class="nav-item">
           <a class="nav-link" href="{% url 'add_category' %}">Create New Tag</a>
         </li>
 
@@ -47,7 +47,7 @@
             <a class="nav-link" href="{% url 'category-list' %}">Tags</a>
           </li>
 
-        {% endif %}
+        {% endif %}-->
 
         <li class="nav-item">
           <a class="nav-link" href="{% url 'browse_post' %}">Browse Ideas</a>
@@ -63,18 +63,23 @@
         </li>
         <!-- fix link later-->
 
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'browse_post' %}">Profile</a>
-        </li>
-        <!-- fix link later-->
 
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'edit_profile' %}">Edit Profile</a>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{ user.first_name }}
+            {{ user.last_name }}
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{% url 'edit_profile' %}">Edit Settings</a>
+            {% if user.profile.id %}
+              <a class="dropdown-item" href="{% url 'edit_profile_page' user.profile.id %}">Edit Profile Page</a>
+              <a class="dropdown-item" href="{% url 'show_profile_page' user.profile.id %}">Show Profile Page</a>
+            {% else %}
+              <a class="dropdown-item" href="{% url 'create_profile_page' %}">Create Profile Page</a>
+            {% endif %}
+          </div>
         </li>
 
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'logout' %}">Logout</a>
-        </li>
       {% else %}
         
         <li class="nav-item">
@@ -98,21 +103,15 @@
 
       {% endif %}
 
-
-      
-
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Dropdown
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Action</a>
-          <a class="dropdown-item" href="#">Another action</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Something else here</a>
-        </div>
-      </li>
     </ul>
+
+    {% if user.is_authenticated %}
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+        </li> 
+      </ul>
+    {% endif %}
   </div>
 </nav>
 

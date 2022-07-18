@@ -5,9 +5,17 @@ from datetime import datetime, date
 from ckeditor.fields import RichTextField
 
 
+#class Occupation(models.Model):
+    #name = models.CharField(max_length=255)
+
+    #def __str__(self):
+    #    return self.name
+
+    #def get_absolute_url(self):
+    #    return reverse('home')
+
 class Category(models.Model):
     name = models.CharField(max_length=255)
-
 
     def __str__(self):
         return self.name
@@ -16,7 +24,37 @@ class Category(models.Model):
         #return reverse('article-detail', args=(str(self.id)))
         return reverse('home')
 
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+    bio = models.TextField() 
+    profile_pic = models.ImageField(null=True, blank=True, upload_to="images/profile/")
+    website_url = models.CharField(max_length=255, null=True, blank=True)
+    facebook_url = models.CharField(max_length=255, null=True, blank=True)
+    twitter_url = models.CharField(max_length=255, null=True, blank=True)
+    instagram_url = models.CharField(max_length=255, null=True, blank=True)
+    pinterest_url = models.CharField(max_length=255, null=True, blank=True)
+    linkedin_url = models.CharField(max_length=255, null=True, blank=True)
+    interest = models.CharField(max_length=255, default = "Uncategorized")
+    interest2 = models.CharField(max_length=255, default = "Uncategorized")
+    interest3 = models.CharField(max_length=255, default = "Uncategorized")
+    #occupation = models.CharField(max_length=255, default = "Unemployed")
+
+    #add more fields like tags and jobs here for user(acessed by user.profile.tags, etc.)
+
+    def __str__(self):
+        return str(self.user)
+    
+    def get_absolute_url(self):
+        #return reverse('article-detail', args=(str(self.id)))
+        return reverse('home')
+
+
 class Post(models.Model):
+
+    
+
     title = models.CharField(max_length=255)
     header_image = models.ImageField(null=True, blank=True, upload_to="images/")
     title_tag = models.CharField(max_length=255, default = "Post")
@@ -25,12 +63,12 @@ class Post(models.Model):
     budget = models.IntegerField()
     post_date = models.DateField(auto_now_add=True)
     category = models.CharField(max_length=255, default = "Uncategorized")
+    category2 = models.CharField(max_length=255, default = "Uncategorized")
+    category3 = models.CharField(max_length=255, default = "Uncategorized")
     snippet = models.CharField(max_length=255)
     description = RichTextField(blank=True, null=True)
     likes = models.ManyToManyField(User, related_name='blog_posts')
-    #required_position
-    #tag
-    #term
+    terms = models.IntegerField(null=True)
     #images
     #make sure to migrate
 

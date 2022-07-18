@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %}
 {{ post.title_tag }}
 {% endblock %}
@@ -16,14 +16,17 @@
         <img src="{{ post.header_image.url }}">
     {% endif %}
     <br/>
-    Category: <a href="{% url 'category' post.category|slugify  %}">{{ post.category }}</a>
+    Category1: {{ post.category }}
+    <br/>
+    Category2: {{ post.category2 }}
+    <br/>
+    Category3: {{ post.category3 }}
     <br/>
     Description: {{ post.description|safe }}
     <br/>
     Size: {{ post.size }} People
     <br/>
     Budget: ${{ post.budget }}
-
     {% if user.is_authenticated %}
         {% if user.id == post.author.id %}
             <br/><br/>
@@ -55,4 +58,44 @@
             {% endif %}
     </form>
 
+    <br/><br/>
+
+    <div class="card mb-3">
+        <div class="row no-gutters">
+        <div class="col-md-2">
+            {% if post.author.profile.profile_pic %}
+                <img src="{{ post.author.profile.profile_pic.url }}" width=140 height=140 class="rounded-circle">
+            {% else %}
+                <img src="{% static 'thesite/images/default_profile_pic.jpg' %}" width=140 height=140 class="rounded-circle">
+            {% endif %}
+        </div>
+        <div class="col-md-10">
+            <div class="card-body">
+            <h5 class="card-title">{{ post.author.first_name }} {{ post.author.last_name }}</h5>
+            <p class="card-text"><small class="text-muted">
+
+                <a href="{% url 'show_profile_page' post.author.profile.id %}">Profile Page</a>
+                {% if post.author.profile.website_url %}
+                    | <a href="{{ post.author.profile.website_url }}">Website</a>
+                {% endif %}
+                {% if post.author.profile.facebook_url %}
+                    | <a href="{{ post.author.profile.facebook_url }}">Facebook</a>
+                {% endif %}
+                {% if post.author.profile.twitter_url %}
+                    | <a href="{{ post.author.profile.twitter_url }}">Twitter</a>
+                {% endif %}
+                {% if post.author.profile.instagram_url %}
+                    | <a href="{{ post.author.profile.instagram_url }}">Instagram</a>
+                {% endif %}
+                {% if post.author.profile.pinterest_url %}
+                    | <a href="{{ post.author.profile.pinterest_url }}">Pinterest</a>
+                {% endif %}
+                {% if post.author.profile.linkedin_url %}
+                    | <a href="{{ post.author.profile.linkedin_url }}">Linkedin</a>
+                {% endif %}</small></p>
+            <p class="card-text">{{ post.author.profile.bio }}</p>
+            </div>
+        </div>
+        </div>
+    </div>
 {% endblock %}
